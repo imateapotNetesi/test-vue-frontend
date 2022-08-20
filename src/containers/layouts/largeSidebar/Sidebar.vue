@@ -34,10 +34,12 @@
             data-item="ui-kits"
             :data-submenu="true"
           >
-            <a class="nav-item-hold" href="#">
+          
+          <router-link tag="a" class="nav-item-hold" to="/aziende">
               <i class="nav-icon i-Library"></i>
-              <span class="nav-text">UI kits</span>
-            </a>
+              <span class="nav-text">Aziende</span>
+            </router-link>
+            
             <div class="triangle"></div>
           </li>
           <li

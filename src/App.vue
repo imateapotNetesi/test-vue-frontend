@@ -2,7 +2,7 @@
   <div>
     <router-view></router-view>
 
-    <customizer></customizer>
+   
   </div>
 </template>
 

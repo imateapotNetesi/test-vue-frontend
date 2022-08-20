@@ -10,9 +10,7 @@
       <div></div>
     </div>
 
-    <div class="d-flex align-items-center">
-      <!-- Mega menu -->
-      <div
+           <div
         :class="{ show: isMegaMenuOpen }"
         class="dropdown mega-menu d-none d-md-block"
         v-on-clickaway="closeMegaMenu"
@@ -115,6 +113,9 @@
           </div>
         </div>
       </div>
+    <div class="d-flex align-items-center">
+      <!-- Mega menu -->
+ 
       <!-- / Mega menu -->
       <div class="search-bar" @click="toggleSearch">
         <input type="text" placeholder="Search" />
@@ -125,6 +126,15 @@
     <div style="margin: auto"></div>
 
     <div class="header-part-right">
+
+   
+            <label class="switch switch-primary mr-3 mt-2" v-b-popover.hover.left="'Dark Mode'">
+              <input type="checkbox" @click="changeThemeMode" />
+              <span class="slider"></span>
+            </label>
+        
+        
+
       <!-- Full screen toggle -->
       <i
         class="i-Full-Screen header-icon d-none d-sm-inline-block"

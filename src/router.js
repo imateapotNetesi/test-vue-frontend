@@ -17,8 +17,12 @@ const routes = [
     redirect: "/app/dashboards/dashboard.v1",
 
     children: [
-    	//ÀÌÇý¿øÃß°¡
-		{
+    	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß°ï¿½
+      {
+        path: "aziende",
+          name: "aziende",
+          component: () => import("./views/app/apps/todo-list")
+        }, {
 			path: "/app/sample",
 			component: () => import("./views/app/sample"), //sample
 			children: [
@@ -55,7 +59,7 @@ const routes = [
 
 			]
 		},
-		//ÀÌÇý¿øÃß°¡
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß°ï¿½
       {
         path: "/app/dashboards",
         component: () => import("./views/app/dashboards"), //dashboard

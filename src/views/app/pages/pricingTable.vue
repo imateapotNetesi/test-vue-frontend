@@ -1,288 +1,540 @@
 <template>
   <div class="main-content">
-    <breadcumb :page="'Pricing Table'" :folder="'App'" />
+    <breadcumb :page="'Todo List'" :folder="'App'"/>
 
-    <b-row>
-      <b-col md="12" xl="12" lg="12">
-        <b-card header-bg-variant="transparent" class="mb-30" header="Default Style">
-          <div class="ul-pricing__table-list">
-            <b-row>
-              <b-col md="12" lg="4" xl="4">
-                <div class="ul-pricing__table-1">
-                  <div class="ul-pricing__image card-icon-bg-primary">
-                    <i class="i-Bicycle1"></i>
-                  </div>
-                  <div class="ul-pricing__title">
-                    <h2 class="heading text-primary">Basic</h2>
-                  </div>
-                  <div class="ul-pricing__text text-mute">5gb</div>
-                  <div class="ul-pricing__main-number">
-                    <h3 class="heading display-3 text-primary t-font-boldest">$10</h3>
-                  </div>
-                  <div class="ul-pricing__list">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
-                  </div>
-                  <button type="button" class="btn btn-lg btn-default btn-rounded m-1">Purchase</button>
-                </div>
-              </b-col>
-              <b-col md="12" lg="4" xl="4">
-                <div class="ul-pricing__table-1">
-                  <div class="ul-pricing__image card-icon-bg-primary">
-                    <i class="i-Scooter"></i>
-                  </div>
-                  <div class="ul-pricing__title">
-                    <h2 class="heading text-primary">Standard</h2>
-                  </div>
-                  <div class="ul-pricing__text text-mute">15gb</div>
-                  <div class="ul-pricing__main-number">
-                    <h3 class="heading display-3 text-primary t-font-boldest">$250</h3>
-                  </div>
-                  <div class="ul-pricing__list">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
-                  </div>
-                  <button type="button" class="btn btn-lg btn-default btn-rounded m-1">Purchase</button>
-                </div>
-              </b-col>
-              <b-col md="12" lg="4" xl="4">
-                <div class="ul-pricing__table-1 border-right-0">
-                  <div class="ul-pricing__image card-icon-bg-primary">
-                    <i class="i-Car-2"></i>
-                  </div>
-                  <div class="ul-pricing__title">
-                    <h2 class="heading text-primary">Premium</h2>
-                  </div>
-                  <div class="ul-pricing__text text-mute">35gb</div>
-                  <div class="ul-pricing__main-number">
-                    <h3 class="heading display-3 text-primary t-font-boldest">$500</h3>
-                  </div>
-                  <div class="ul-pricing__list">
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
-                  </div>
-                  <button type="button" class="btn btn-lg btn-default btn-rounded m-1">Purchase</button>
-                </div>
-              </b-col>
-            </b-row>
-          </div>
+    <div class="ul-todo-list-content">
+      <div class="ul-todo-sidebar" :class="{ 'ul-todo-mobile-menu-open ': isOpenMobileMenu }">
+        <div class="ul-todo-sidebar-overlay"></div>
+        <b-card body-class="p-2" class="h-100"> 
+          <i
+            class="todo-sidebar-close i-Close pb-3 float-right"
+            @click="isOpenMobileMenu = !isOpenMobileMenu"
+          ></i>
+          <b-button 
+                v-b-modal.modal-1 block 
+                variant="primary mb-30"
+               
+                >Add Task</b-button>
+               
+          <b-modal id="modal-1" centered title="Add Task" hide-footer>
+            <b-form @submit.prevent="todoFormSubmit('primary')">
+              <b-form-group id="input-group-1" label-for="input-1">
+                <b-form-input
+                  id="input-1"
+                  type="text"
+                  v-model="todoForm.name"
+                  placeholder="task name...."
+                ></b-form-input>
+              </b-form-group>
+              
+              <b-form-group>
+                <b-form-input 
+                    id="input-1" 
+                    type="date"
+                    v-model="todoForm.date"
+                >
+              </b-form-input>
+              </b-form-group>
+              <b-form-group>
+                <b-form-textarea
+                  id="textarea"
+                  v-model="todoForm.description"
+                  placeholder="Description..."
+                  rows="3"
+                ></b-form-textarea>
+              </b-form-group>
+              <b-form-group>
+                <vue-tags-input
+                  v-model="tag"
+                  class="border text-15"
+                  :autocomplete-items="filteredItems"
+                  :tags="todoForm.autocompleteTag"
+                  @tags-changed="
+                    newTags => (todoForm.autocompleteTag = newTags)
+                  "
+                  placeholder="Type Developer Category"
+                />
+                
+              </b-form-group>
+              <!-- <b-form-group id="input-group-3" label-for="input-3">
+                <b-form-select :value="null" id="input-3" :options="foods">
+                  <template v-slot:first>
+                    <option :value="null">Select Developer/Designer...</option>
+                  </template>
+                </b-form-select>
+              </b-form-group>-->
+
+              <b-button type="submit" variant="outline-primary">Submit</b-button>
+              <b-button type="reset" variant="outline-danger">Reset</b-button>
+            </b-form>
+          </b-modal>
+
+          <b-list-group>
+            <b-list-group-item class="border-0" href="#">
+              <a href>
+                <i class="icon-regular i-Find-User mr-2"></i>
+                Find
+              </a>
+            </b-list-group-item>
+            <b-list-group-item class="border-0" href="#">
+              <a href>
+                <i class="icon-regular i-Favorite-Window mr-2"></i>
+                Favourite
+              </a>
+            </b-list-group-item>
+            <b-list-group-item class="border-0" href="#">
+              <a href>
+                <i class="icon-regular i-Delete-File mr-2"></i>
+                Deleted
+              </a>
+            </b-list-group-item>
+          </b-list-group>
         </b-card>
-      </b-col>
+      </div>
+      <p class="ul-todo-content-right">
+        <b-card class="wrapper">
+          <i
+            class="nav-icon i-Align-Justify-All text-25 ul-contact-mobile-icon mr-2"
+            @click="isOpenMobileMenu = !isOpenMobileMenu"
+          ></i>
+          <vue-good-table
+            :columns="columns"
+            :search-options="{
+              enabled: true,
+              placeholder: 'Search this table'
+            }"
+            :pagination-options="{
+              enabled: true,
+              mode: 'records'
+            }"
+            styleClass="tableOne vgt-table"
+            :rows="rows"
+          >
+          
+           <template slot="table-row" slot-scope="props">
+              <!-- <pre>
+                {{ props.row }}
+              </pre> -->
+              <span v-if="props.column.field == 'name'">
+                <div class="ul-todo-area d-flex">
+                  <div>
+                    <label class="checkbox checkbox-primary">
+                      <input type="checkbox" />
+                      <span class="checkmark"></span>
+                    </label>
+                  </div>
+                  <div>{{ props.row.name }}</div>
+                </div>
+              </span>
+              <span v-else-if="props.column.field == profileAction">
+                <!-- <p>{{props.row.profileAction[0].age}}</p> -->
 
-      <b-col md="12" xl="12" lg="12">
-        <b-card header-bg-variant="transparent" class="mb-30" header="Full Width">
-          <b-row>
-            <b-col lg="3" xl="3">
-              <div class="ul-pricing__table-1 mb-4">
-                <div class="ul-pricing__image card-icon-bg-primary">
-                  <i class="i-Gift-Box"></i>
+                <div class="ul-todo-tags d-flex  justify-content-end align-items-center">
+                  <span class="d-flex align-items-center ml-2" v-for="(badge, key) in props.row.tags" :key="key">
+                  
+                    <b-badge class="badge mr-2" :class="badge.badgeColor">{{ badge.text }}</b-badge>
+                
+                  <p class="ul-widget4__img mt-2 mb-2 todo-img" >
+                    <img
+                      :src="badge.img"
+                      class="rounded-circle"
+                    />
+                  </p>
+                  </span>
                 </div>
-                <div class="ul-pricing__title">
-                  <h2 class="heading text-primary">Free</h2>
-                </div>
-                <div class="ul-pricing__text text-mute">1gb</div>
-                <div class="ul-pricing__main-number">
-                  <h3 class="heading display-3 text-primary t-font-boldest">$0</h3>
-                </div>
-                <div class="ul-pricing__list">
-                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
-                </div>
-                <button type="button" class="btn btn-lg btn-primary btn-rounded m-1">Purchase</button>
-              </div>
-            </b-col>
-            <b-col lg="3" xl="3">
-              <div class="ul-pricing__table-1">
-                <div class="ul-pricing__image card-icon-bg-primary">
-                  <i class="i-Bicycle1"></i>
-                </div>
-                <div class="ul-pricing__title">
-                  <h2 class="heading text-primary">Basic</h2>
-                </div>
-                <div class="ul-pricing__text text-mute">5gb</div>
-                <div class="ul-pricing__main-number">
-                  <h3 class="heading display-3 text-primary t-font-boldest">$10</h3>
-                </div>
-                <div class="ul-pricing__list">
-                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
-                </div>
-                <button type="button" class="btn btn-lg btn-primary btn-rounded m-1">Purchase</button>
-              </div>
-            </b-col>
-            <b-col lg="3" xl="3">
-              <div class="ul-pricing__table-1">
-                <div class="ul-pricing__image card-icon-bg-primary">
-                  <i class="i-Scooter"></i>
-                </div>
-                <div class="ul-pricing__title">
-                  <h2 class="heading text-primary">Standard</h2>
-                </div>
-                <div class="ul-pricing__text text-mute">15gb</div>
-                <div class="ul-pricing__main-number">
-                  <h3 class="heading display-3 text-primary t-font-boldest">$250</h3>
-                </div>
-                <div class="ul-pricing__list">
-                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
-                </div>
-                <button type="button" class="btn btn-lg btn-primary btn-rounded m-1">Purchase</button>
-              </div>
-            </b-col>
-            <b-col lg="3" xl="3">
-              <div class="ul-pricing__table-1 border-right-0">
-                <div class="ul-pricing__image card-icon-bg-primary">
-                  <i class="i-Car-2"></i>
-                </div>
-                <div class="ul-pricing__title">
-                  <h2 class="heading text-primary">Premium</h2>
-                </div>
-                <div class="ul-pricing__text text-mute">35gb</div>
-                <div class="ul-pricing__main-number">
-                  <h3 class="heading display-3 text-primary t-font-boldest">$500</h3>
-                </div>
-                <div class="ul-pricing__list">
-                  <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,</p>
-                </div>
-                <button type="button" class="btn btn-lg btn-primary btn-rounded m-1">Purchase</button>
-              </div>
-            </b-col>
-          </b-row>
+              </span>
+              <span v-else-if="props.column.field == 'action'">
+                
+                <b-dropdown
+                  id="dropdown-left"
+                  variant="link"
+                  text="Left align"
+                  toggle-class="text-decoration-none"
+                  size="sm"
+                  dropleft
+                  no-caret
+                >
+                  <template v-slot:button-content class="_r_btn border-0">
+                    <span class="_dot _r_block-dot bg-dark"></span>
+                    <span class="_dot _r_block-dot bg-dark"></span>
+                    <span class="_dot _r_block-dot bg-dark"></span>
+                  </template>
+                  <b-dropdown-item  class="dropdown-item" 
+                     
+                      @click="editTodo(props.row)" 
+                      v-b-modal.contact-list-table-modal-2>
+                      <i class="nav-icon i-Pen-2 text-success font-weight-bold mr-2"></i>Edit
+                  </b-dropdown-item>
+
+                  <b-dropdown-item>
+                    <a class="dropdown-item" @click="deleteTodo(props.index)">
+                      <i class="nav-icon i-Close-Window text-danger font-weight-bold mr-2"></i>Delete
+                    </a>
+                  </b-dropdown-item>
+                </b-dropdown>
+              </span>
+            
+            </template>
+          </vue-good-table>
         </b-card>
-      </b-col>
+        <!-- edit-modal  -->
+        <div class="edit-modal">
+          <b-modal 
+                ref="my-modal"
+                id="contact-list-table-modal-2" 
+                centered title="BootstrapVue"
+                hide-footer>
+            <b-form @submit.prevent="onUpdateTodoList">
+              <b-form-group id="input-group-1" label-for="input-1">
+                <b-form-input
+                  id="input-1"
+                  type="text"
+                  v-model="editTodoList.name"
+                  placeholder="task name...."
+                ></b-form-input>
+              </b-form-group>
+              <b-form-group></b-form-group>
+              <b-form-group>
+                <b-form-textarea
+                  id="textarea"
+                  placeholder="Description..."
+                  v-model="editTodoList.description"
+                  rows="3"
+                ></b-form-textarea>
+              </b-form-group>
+              <b-form-group>
+                <b-form-input 
+                    id="input-1" 
+                    type="date"
+                    v-model="editTodoList.date"
+                >
+              </b-form-input>
+              </b-form-group>
+              <b-form-group>
+                <vue-tags-input
+                  class="border text-15"
+                  v-model="editedTag"
+                  :autocomplete-items="filteredItems"
+                  :tags="editTodoList.tags"
+                  @tags-changed="
+                    newTags => (editTodoList.tags = newTags)
+                  "
+                  placeholder="Type Developer Category"
+                />
+              </b-form-group>
+                
+             
+              <!-- end::edit-modal -->
 
-      <b-col md="12" xl="12" lg="12">
-        <b-card header-bg-variant="transparent" class="mb-30" header="Full Width with Hover">
-          <b-row>
-            <b-col lg="3" xl="3" class="m-0 p-0">
-              <div class="ul-pricing__table-2">
-                <div class="ul-pricing__header">
-                  <div class="ul-pricing__image text-primary m-0">
-                    <i class="i-Car-2"></i>
-                  </div>
-                  <div class="ul-pricing__main-number m-0">
-                    <h1 class="heading text-primary t-font-boldest">$0.00</h1>
-                  </div>
-                  <div class="ul-pricing__month">
-                    <small class="text-purple-100">per month</small>
-                  </div>
-                </div>
-                <div class="ul-pricing__title">
-                  <h2 class="heading text-primary">Free</h2>
-                </div>
-                <div class="ul-pricing__table-listing mb-4">
-                  <ul>
-                    <li class="t-font-bolder">Disk Space 250gb</li>
-                    <li class="t-font-bolder">Bandwidth 250gb</li>
-                    <li class="t-font-bolder">Databases</li>
-                    <li class="text-mute">E-mail accounts NO</li>
-                    <li class="text-mute">24h support NO</li>
-                    <li class="text-mute">E-mail support NO</li>
-                  </ul>
-                </div>
-
-                <button type="button" class="btn btn-lg btn-primary btn-rounded m-1">Purchase</button>
-              </div>
-            </b-col>
-
-            <b-col lg="3" xl="3" class="m-0 p-0">
-              <div class="ul-pricing__table-2">
-                <div class="ul-pricing__header">
-                  <div class="ul-pricing__image text-warning m-0">
-                    <i class="i-Bicycle1"></i>
-                  </div>
-                  <div class="ul-pricing__main-number m-0">
-                    <h1 class="heading text-warning t-font-boldest">$10</h1>
-                  </div>
-                  <div class="ul-pricing__month">
-                    <small class="text-purple-100">per month</small>
-                  </div>
-                </div>
-                <div class="ul-pricing__title">
-                  <h2 class="heading text-warning">Basic</h2>
-                </div>
-                <div class="ul-pricing__table-listing mb-4">
-                  <ul>
-                    <li class="t-font-bolder">Disk Space 250gb</li>
-                    <li class="t-font-bolder">Bandwidth 250gb</li>
-                    <li class="t-font-bolder">Databases</li>
-                    <li class="text-mute">E-mail accounts NO</li>
-                    <li class="text-mute">24h support NO</li>
-                    <li class="text-mute">E-mail support NO</li>
-                  </ul>
-                </div>
-
-                <button type="button" class="btn btn-lg btn-warning btn-rounded m-1">Purchase</button>
-              </div>
-            </b-col>
-
-            <b-col lg="3" xl="3" class="m-0 p-0">
-              <div class="ul-pricing__table-2">
-                <div class="ul-pricing__header">
-                  <div class="ul-pricing__image text-danger m-0">
-                    <i class="i-Scooter"></i>
-                  </div>
-                  <div class="ul-pricing__main-number m-0">
-                    <h1 class="heading text-danger t-font-boldest">$250</h1>
-                  </div>
-                  <div class="ul-pricing__month">
-                    <small class="text-purple-100">per month</small>
-                  </div>
-                </div>
-                <div class="ul-pricing__title">
-                  <h2 class="heading text-danger">Standard</h2>
-                </div>
-                <div class="ul-pricing__table-listing mb-4">
-                  <ul>
-                    <li class="t-font-bolder">Disk Space 250gb</li>
-                    <li class="t-font-bolder">Bandwidth 250gb</li>
-                    <li class="t-font-bolder">Databases</li>
-                    <li class>
-                      E-mail accounts
-                      <span class="t-font-bold text-danger">Yes</span>
-                    </li>
-                    <li class>
-                      24h support
-                      <span class="t-font-bold text-danger">Yes</span>
-                    </li>
-                    <li class="text-mute">E-mail support NO</li>
-                  </ul>
-                </div>
-
-                <button type="button" class="btn btn-lg btn-danger btn-rounded m-1">Purchase</button>
-              </div>
-            </b-col>
-
-            <b-col lg="3" xl="3" class="m-0 p-0">
-              <div class="ul-pricing__table-2 border-right-0">
-                <div class="ul-pricing__header">
-                  <div class="ul-pricing__image text-success m-0">
-                    <i class="i-Helicopter"></i>
-                  </div>
-                  <div class="ul-pricing__main-number m-0">
-                    <h1 class="heading text-success t-font-boldest">$500</h1>
-                  </div>
-                  <div class="ul-pricing__month">
-                    <small class="text-purple-100">per month</small>
-                  </div>
-                </div>
-                <div class="ul-pricing__title">
-                  <h2 class="heading text-success">Premium</h2>
-                </div>
-                <div class="ul-pricing__table-listing mb-4">
-                  <ul>
-                    <li class="t-font-bolder">Disk Space 250gb</li>
-                    <li class="t-font-bolder">Bandwidth 250gb</li>
-                    <li class="t-font-bolder">Databases</li>
-                    <li class="text-mute">E-mail accounts NO</li>
-                    <li class>
-                      24h support
-                      <span class="text-success">Yes</span>
-                    </li>
-                    <li class="text-mute">E-mail support NO</li>
-                  </ul>
-                </div>
-
-                <button type="button" class="btn btn-lg btn-success btn-rounded m-1">Purchase</button>
-              </div>
-            </b-col>
-          </b-row>
-        </b-card>
-      </b-col>
-    </b-row>
-  </div>
+              <b-button type="submit"  variant="outline-primary">Submit</b-button>
+              <b-button type="reset" variant="outline-danger">Reset</b-button>
+            </b-form>
+          </b-modal>
+        </div>
+      </div>
+    </div>  
 </template>
+<script>
+import tagInputVue from "../form/tagInput.vue";
+export default {
+  data() {
+    return {
+      isBadge: true,
+      isOpenMobileMenu: false,
+      editTodoList: "",
+      // tagInput
+      tag: "",
+      editedTag:"",
+      tags: [],
+      autocompleteTags: [
+        {
+          text: "Vue"
+        }
+      ],
+      autocompleteItems: [
+        {
+          text: "Vue",
+          badgeColor: "badge-success",
+          img: require("@/assets/images/faces/1.jpg")
+        },
+        {
+          text: "Angular",
+          badgeColor: "badge-danger",
+          img: require("@/assets/images/faces/2.jpg")
+        },
+        {
+          text: "React",
+          badgeColor: "badge-info",
+          img: require("@/assets/images/faces/3.jpg")
+        },
+        {
+          text: "Jquery",
+          badgeColor: "badge-danger",
+          img: require("@/assets/images/faces/4.jpg")
+        },
+        {
+          text: "JS",
+          badgeColor: "badge-warning",
+          img: require("@/assets/images/faces/5.jpg")
+        }
+      ],
+      // tagInput
+      todoForm: [
+        {
+          name: "",
+          description: "",
+          autocompleteTag: "",
+          date: new Date()
+        }
+      ],
+      foods: [
+        { text: "Select One", value: null },
+        "Carrots",
+        "Beans",
+        "Tomatoes",
+        "Corn"
+      ],
+      columns: [
+        {
+          label: "",
+          field: "name"
+        },
+        {
+          label: " ",
+          field: this.profileAction,
+          width: "150px"
+        },
+        {
+          field: "action"
+        },
+      
+      ],
+      rows: [
+        {
+          id: 1,
+          name:
+            "Wireless Bluetooth V4.0 Portable Speaker with HD Sound and Bass",
+          description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          date:"2019-10-18",
+          tags: [
+            {
+              text: "Vue",
+              badgeColor: "badge-success",
+              img: require("@/assets/images/faces/1.jpg"),
+            },
+            {
+              text: "React",
+              badgeColor: "badge-info",
+              img: require("@/assets/images/faces/3.jpg"),
+            }
+          ]
+        },
+        {
+          id: 2,
+          name: "Bluetooth Headphone",
+          name:
+            "Bluetooth V4.0 Portable Speaker with HD Sound and Bass",
+          description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          date:"2019-10-18",
+          tags: [
+            {
+              text: "Jquery",
+              badgeColor: "badge-danger",
+              img: require("@/assets/images/faces/4.jpg")
+            },
+            {
+              text: "JS",
+              badgeColor: "badge-warning",
+              img: require("@/assets/images/faces/5.jpg")
+            }
+          ]
+        },
+        {
+          id: 3,
+          name: "Bluetooth Headphone",
+          name:
+            "Monitor V4.0 Portable Speaker with HD Sound and Bass",
+          description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          date:"2019-10-18",
+          tags: [
+            {
+              text: "Angular",
+              badgeColor: "badge-danger",
+              img: require("@/assets/images/faces/2.jpg")
+            },
+            {
+              text: "Jquery",
+              badgeColor: "badge-danger",
+              img: require("@/assets/images/faces/4.jpg")
+            }
+          ]
+        },
+        {
+          id: 4,
+          name:
+            "Wireless Bluetooth V4.0 Portable Speaker with HD Sound and Bass",
+          description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          date:"2019-10-18",
+          tags: [
+            {
+              text: "Vue",
+              badgeColor: "badge-success",
+              img: require("@/assets/images/faces/1.jpg"),
+            },
+            {
+              text: "React",
+              badgeColor: "badge-info",
+              img: require("@/assets/images/faces/3.jpg"),
+            }
+          ]
+        },
+        {
+          id: 5,
+          name: "Bluetooth Headphone",
+          name:
+            "Bluetooth V4.0 Portable Speaker with HD Sound and Bass",
+          description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          date:"2019-10-18",
+          tags: [
+            {
+              text: "Jquery",
+              badgeColor: "badge-danger",
+              img: require("@/assets/images/faces/4.jpg")
+            },
+            {
+              text: "JS",
+              badgeColor: "badge-warning",
+              img: require("@/assets/images/faces/5.jpg")
+            }
+          ]
+        },
+        {
+          id: 6,
+          name: "Bluetooth Headphone",
+          name:
+            "Monitor V4.0 Portable Speaker with HD Sound and Bass",
+          description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          date:"2019-10-18",
+          tags: [
+            {
+              text: "Angular",
+              badgeColor: "badge-danger",
+              img: require("@/assets/images/faces/2.jpg")
+            },
+            {
+              text: "Jquery",
+              badgeColor: "badge-danger",
+              img: require("@/assets/images/faces/4.jpg")
+            }
+          ]
+        },
+        {
+          id: 7,
+          name: "Bluetooth Headphone",
+          name:
+            "Bluetooth V4.0 Portable Speaker with HD Sound and Bass",
+          description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+          date:"2019-10-18",
+          tags: [
+            {
+              text: "Jquery",
+              badgeColor: "badge-danger",
+              img: require("@/assets/images/faces/4.jpg")
+            },
+            {
+              text: "JS",
+              badgeColor: "badge-warning",
+              img: require("@/assets/images/faces/5.jpg")
+            }
+          ]
+        }
+      ]
+    };
+  },
+  methods: {
+    profileAction(data) {
+      return data;
+    },
+    todoFormSubmit(variant = null) {
+      let inputName = this.todoForm.name;
+      let description = this.todoForm.description;
+      let inputTag = this.todoForm.autocompleteTag;
+      let date = this.todoForm.date;
+      
+      this.rows.push({
+        id: this.rows.length+1,
+        name: inputName,
+        tags: inputTag,
+        description: description,
+        date:date
+      });
+      
+     
+      this.$swal({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        type: 'success',
+        title: 'Data Inserted Successfully'
+      })
+      
+    },
+    deleteTodo(data) {
+      console.log(data);
+      
+      this.$swal({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then(result => {
+        if (result.value) {
+          this.$delete(this.rows, data)
+          this.$swal("Deleted!", "Your file has been deleted.", "success");
+        }
+      });
+      
+    },
+    editTodo(data){
+      this.editTodoList = data
+      
+    },
+    onUpdateTodoList(){
+      
+      let modifiedList = this.rows.map(row => {
+          
+          this.$refs['my-modal'].hide()
+          this.$swal({
+            position: "top-end",
+            type: "warning",
+            title: "Your work has been saved",
+            showConfirmButton: false,
+            timer: 1000
+          });
+          
+        if (row.id == this.editTodoList.id) {
+          
+          return this.editTodoList
+          
+        }
+        else{
+          return row
+        }
+      });
+      this.rows = modifiedList;
+      
+    }
+  },
+  computed: {
+    filteredItems() {
+      return this.autocompleteItems.filter(i => {
+        return i.text.toLowerCase().indexOf(this.tag.toLowerCase()) !== -1;
+      });
+    }
+  }
+};
+</script>

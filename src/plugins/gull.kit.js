@@ -60,11 +60,11 @@ export default {
       // The `import` function returns a Promise.
       () => import("../containers/layouts/verticalSidebarTwo")
     );
-    //Vue.component(
-    //  "customizer",
-    //  // The `import` function returns a Promise.
-    //  () => import("../components/common/customizer.vue")
-    //);
+  Vue.component(
+    "customizer",
+    // The `import` function returns a Promise.
+    () => import("../components/common/customizer.vue")
+  );
     Vue.component("vue-perfect-scrollbar", () =>
       import("vue-perfect-scrollbar")
     );

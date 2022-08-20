@@ -1,23 +1,21 @@
 <template>
-  <div class="app-admin-wrap layout-sidebar-vertical-two clearfix sidebar-full">
+  <div class="app-admin-wrap layout-sidebar-vertical clearfix sidebar-full">
     <verticalSidebar />
     <main>
       <div
-        class="main-content-wrap mt-0"
+        class="main-content-wrap mt-0 bg-off-white d-flex flex-column flex-grow-1"
         :class="{
           'vertical-sidebar': getVerticalSidebar.isVerticalSidebar,
           compact: getVerticalSidebar.isVerticalCompact
         }"
       >
         <verticalTopbar />
-        
-        <div class="px-4">
+
         <transition name="page" mode="out-in">
           <router-view />
         </transition>
+        <div class="flex-grow-1"></div>
         <appFooter />
-        </div>
-        
       </div>
     </main>
   </div>
@@ -32,14 +30,14 @@ export default {
   components: {
     verticalSidebar,
     verticalTopbar,
-    appFooter
+    appFooter,
   },
   computed: {
-    ...mapGetters(["getVerticalSidebar"])
+    ...mapGetters(["getVerticalSidebar"]),
   },
   data() {
     return {};
   },
-  methods: {}
+  methods: {},
 };
 </script>

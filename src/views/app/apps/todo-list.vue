@@ -1,20 +1,20 @@
 <template>
   <div class="main-content">
-    <breadcumb :page="'Todo List'" :folder="'App'"/>
+    <breadcumb :page="'Aziende'" :folder="'Home'"/>
 
-    <div class="ul-todo-list-content">
-      <div class="ul-todo-sidebar" :class="{ 'ul-todo-mobile-menu-open ': isOpenMobileMenu }">
-        <div class="ul-todo-sidebar-overlay"></div>
+    <div class="ul-todo-list-content ">
+      <div class="ul-todo-sidebar" >
         <b-card body-class="p-2" class="h-100"> 
           <i
             class="todo-sidebar-close i-Close pb-3 float-right"
             @click="isOpenMobileMenu = !isOpenMobileMenu"
           ></i>
-          <b-button 
+          <b-button style="font-size:150%"
                 v-b-modal.modal-1 block 
-                variant="primary mb-30"
+                variant="primary"
+                class="w-100 justify-content-center align-items-center d-flex flex-column"
                
-                >Add Task</b-button>
+                >  <i style="font-size:200%" class="i-Add mb-2"></i> Aggiungi Azienda</b-button>
                
           <b-modal id="modal-1" centered title="Add Task" hide-footer>
             <b-form @submit.prevent="todoFormSubmit('primary')">
@@ -56,39 +56,20 @@
                 />
                 
               </b-form-group>
-              <!-- <b-form-group id="input-group-3" label-for="input-3">
+              <b-form-group id="input-group-3" label-for="input-3">
                 <b-form-select :value="null" id="input-3" :options="foods">
                   <template v-slot:first>
                     <option :value="null">Select Developer/Designer...</option>
                   </template>
                 </b-form-select>
-              </b-form-group>-->
+              </b-form-group>
 
               <b-button type="submit" variant="outline-primary">Submit</b-button>
               <b-button type="reset" variant="outline-danger">Reset</b-button>
             </b-form>
           </b-modal>
 
-          <b-list-group>
-            <b-list-group-item class="border-0" href="#">
-              <a href>
-                <i class="icon-regular i-Find-User mr-2"></i>
-                Find
-              </a>
-            </b-list-group-item>
-            <b-list-group-item class="border-0" href="#">
-              <a href>
-                <i class="icon-regular i-Favorite-Window mr-2"></i>
-                Favourite
-              </a>
-            </b-list-group-item>
-            <b-list-group-item class="border-0" href="#">
-              <a href>
-                <i class="icon-regular i-Delete-File mr-2"></i>
-                Deleted
-              </a>
-            </b-list-group-item>
-          </b-list-group>
+     
         </b-card>
       </div>
       <p class="ul-todo-content-right">
@@ -112,66 +93,23 @@
           >
           
            <template slot="table-row" slot-scope="props">
-              <!-- <pre>
-                {{ props.row }}
-              </pre> -->
-              <span v-if="props.column.field == 'name'">
+           
+              <span >
                 <div class="ul-todo-area d-flex">
-                  <div>
-                    <label class="checkbox checkbox-primary">
-                      <input type="checkbox" />
-                      <span class="checkmark"></span>
-                    </label>
-                  </div>
+               
                   <div>{{ props.row.name }}</div>
                 </div>
               </span>
-              <span v-else-if="props.column.field == profileAction">
-                <!-- <p>{{props.row.profileAction[0].age}}</p> -->
+           
+              <span>
 
-                <div class="ul-todo-tags d-flex  justify-content-end align-items-center">
-                  <span class="d-flex align-items-center ml-2" v-for="(badge, key) in props.row.tags" :key="key">
-                  
-                    <b-badge class="badge mr-2" :class="badge.badgeColor">{{ badge.text }}</b-badge>
-                
-                  <p class="ul-widget4__img mt-2 mb-2 todo-img" >
-                    <img
-                      :src="badge.img"
-                      class="rounded-circle"
-                    />
-                  </p>
-                  </span>
-                </div>
-              </span>
-              <span v-else-if="props.column.field == 'action'">
-                
-                <b-dropdown
-                  id="dropdown-left"
-                  variant="link"
-                  text="Left align"
-                  toggle-class="text-decoration-none"
-                  size="sm"
-                  dropleft
-                  no-caret
-                >
-                  <template v-slot:button-content class="_r_btn border-0">
-                    <span class="_dot _r_block-dot bg-dark"></span>
-                    <span class="_dot _r_block-dot bg-dark"></span>
-                    <span class="_dot _r_block-dot bg-dark"></span>
-                  </template>
-                  <b-dropdown-item  class="dropdown-item" 
-                     
-                      @click="editTodo(props.row)" 
+                    <a class="dropdown-item"  @click="editTodo(props.row)" 
                       v-b-modal.contact-list-table-modal-2>
                       <i class="nav-icon i-Pen-2 text-success font-weight-bold mr-2"></i>Edit
-                  </b-dropdown-item>
-
-                  <b-dropdown-item>
+                      </a>
                     <a class="dropdown-item" @click="deleteTodo(props.index)">
                       <i class="nav-icon i-Close-Window text-danger font-weight-bold mr-2"></i>Delete
                     </a>
-                  </b-dropdown-item>
-                </b-dropdown>
               </span>
             
             </template>
@@ -234,6 +172,47 @@
       </div>
     </div>  
 </template>
+<style>
+
+thead {
+  display: none;
+}
+
+tbody {
+  height: fit-content;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(300px, 1fr));
+  grid-gap: 1rem;
+}
+
+.vgt-inner-wrap {
+ box-shadow: none;
+}
+
+.vgt-global-search.vgt-clearfix {
+  margin-bottom: 1rem;
+}
+
+
+table.vgt-table td {
+  border:none;
+  border:1px solid  #D1D5DB; 
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+td span:nth-child(2) {
+  display: flex;
+}
+
+.card-body {
+  padding: 1rem ;
+}
+
+</style>
+
 <script>
 import tagInputVue from "../form/tagInput.vue";
 export default {
@@ -246,7 +225,6 @@ export default {
       tag: "",
       editedTag:"",
       tags: [],
-
       autocompleteTags: [
         {
           text: "Vue"
@@ -297,20 +275,13 @@ export default {
       ],
       columns: [
         {
-          label: "",
+     
           field: "name"
-        },
-        {
-          label: " ",
-          field: this.profileAction,
-          width: "150px"
-        },
-        {
-          field: "action"
-        },
-      
+        }
+                  
       ],
-      rows: [
+   
+      rows: [ 
         {
           id: 1,
           name:
@@ -322,7 +293,6 @@ export default {
               text: "Vue",
               badgeColor: "badge-success",
               img: require("@/assets/images/faces/1.jpg"),
-
             },
             {
               text: "React",
@@ -373,46 +343,6 @@ export default {
         },
         {
           id: 4,
-          name:
-            "Wireless Bluetooth V4.0 Portable Speaker with HD Sound and Bass",
-          description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-          date:"2019-10-18",
-          tags: [
-            {
-              text: "Vue",
-              badgeColor: "badge-success",
-              img: require("@/assets/images/faces/1.jpg"),
-
-            },
-            {
-              text: "React",
-              badgeColor: "badge-info",
-              img: require("@/assets/images/faces/3.jpg"),
-            }
-          ]
-        },
-        {
-          id: 5,
-          name: "Bluetooth Headphone",
-          name:
-            "Bluetooth V4.0 Portable Speaker with HD Sound and Bass",
-          description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
-          date:"2019-10-18",
-          tags: [
-            {
-              text: "Jquery",
-              badgeColor: "badge-danger",
-              img: require("@/assets/images/faces/4.jpg")
-            },
-            {
-              text: "JS",
-              badgeColor: "badge-warning",
-              img: require("@/assets/images/faces/5.jpg")
-            }
-          ]
-        },
-        {
-          id: 6,
           name: "Bluetooth Headphone",
           name:
             "Monitor V4.0 Portable Speaker with HD Sound and Bass",
@@ -432,25 +362,26 @@ export default {
           ]
         },
         {
-          id: 7,
+          id: 5,
           name: "Bluetooth Headphone",
           name:
-            "Bluetooth V4.0 Portable Speaker with HD Sound and Bass",
+            "Monitor V4.0 Portable Speaker with HD Sound and Bass",
           description:"Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
           date:"2019-10-18",
           tags: [
             {
+              text: "Angular",
+              badgeColor: "badge-danger",
+              img: require("@/assets/images/faces/2.jpg")
+            },
+            {
               text: "Jquery",
               badgeColor: "badge-danger",
               img: require("@/assets/images/faces/4.jpg")
-            },
-            {
-              text: "JS",
-              badgeColor: "badge-warning",
-              img: require("@/assets/images/faces/5.jpg")
             }
           ]
         }
+ 
       ]
     };
   },
@@ -461,7 +392,6 @@ export default {
     todoFormSubmit(variant = null) {
       let inputName = this.todoForm.name;
       let description = this.todoForm.description;
-
       let inputTag = this.todoForm.autocompleteTag;
       let date = this.todoForm.date;
       
@@ -472,7 +402,6 @@ export default {
         description: description,
         date:date
       });
-
       
      
       this.$swal({
@@ -483,7 +412,6 @@ export default {
         type: 'success',
         title: 'Data Inserted Successfully'
       })
-
       
     },
     deleteTodo(data) {
@@ -531,7 +459,6 @@ export default {
           return row
         }
       });
-
       this.rows = modifiedList;
       
     }
@@ -545,3 +472,5 @@ export default {
   }
 };
 </script>
+
+
