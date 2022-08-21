@@ -9,7 +9,7 @@
             class="todo-sidebar-close i-Close pb-3 float-right"
             @click="isOpenMobileMenu = !isOpenMobileMenu"
           ></i>
-          <b-button style="font-size:150%"
+          <b-button style="font-size:120%"
                 v-b-modal.modal-1 block 
                 variant="primary"
                 class="w-100 justify-content-center align-items-center d-flex flex-column"
@@ -95,8 +95,9 @@
            <template slot="table-row" slot-scope="props">
            
               <span >
-                <div class="ul-todo-area d-flex">
-               
+                <div class="ul-todo-area d-flex flex-column">
+                             <img height="150" class="logo cover block" src="@/assets/images/symbol2.png" alt="" />
+
                   <div>{{ props.row.name }}</div>
                 </div>
               </span>
@@ -175,14 +176,14 @@
 <style>
 
 thead {
-  display: none;
+  display: none; 
 }
 
 tbody {
   height: fit-content;
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fill,minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill,minmax(250px, 1fr));
   grid-gap: 1rem;
 }
 
@@ -209,6 +210,16 @@ td span:nth-child(2) {
 
 .card-body {
   padding: 1rem ;
+}
+
+
+@media only screen and (max-width: 395px) {
+tbody {
+  grid-template-columns: repeat(auto-fill,minmax(100%, 1fr));
+}
+input.vgt-input.vgt-pull-left {
+  width: 100%;
+}
 }
 
 </style>

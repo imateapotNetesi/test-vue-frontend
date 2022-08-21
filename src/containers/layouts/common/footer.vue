@@ -6,7 +6,6 @@
         class="footer-bottom d-flex flex-column flex-sm-row align-items-center"
       >
           <div class="d-flex align-items-center">
-              <img class="logo" src="@/assets/images/symbol2.png" alt="" />
               <div>
                   <div>
                       <p class="m-0">&copy; 2014 CAEDU.CO.KR.</p>
@@ -45,6 +44,9 @@
     </div>
     
   </div>
+
+
+  
 </template> 
 <script>
 export default {
